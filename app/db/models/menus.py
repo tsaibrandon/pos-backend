@@ -1,6 +1,7 @@
-from app.db.database import Base
 from sqlalchemy import Column, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
+
+from app.db.database import Base
 
 """
 SQLAlchemy ORM models for the menu system:
@@ -16,10 +17,14 @@ class Menu(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
-    restaurant_id = Column(Integer, ForeignKey("restaurants.id", ondelete="CASCADE"), nullable=False)
+    restaurant_id = Column(
+        Integer, ForeignKey("restaurants.id", ondelete="CASCADE"), nullable=False
+    )
 
     restaurant = relationship("Restaurant", back_populates="menus")
-    items = relationship("MenuItemMenu", back_populates="menu", cascade="all, delete-orphan")
+    items = relationship(
+        "MenuItemMenu", back_populates="menu", cascade="all, delete-orphan"
+    )
 
 
 class MenuItem(Base):
@@ -30,7 +35,9 @@ class MenuItem(Base):
     description = Column(String)
     image_url = Column(String)
 
-    menus = relationship("MenuItemMenu", back_populates="menu_item", cascade="all, delete-orphan")
+    menus = relationship(
+        "MenuItemMenu", back_populates="menu_item", cascade="all, delete-orphan"
+    )
     orders = relationship("OrderItem", back_populates="menu_item")
 
 
@@ -38,8 +45,12 @@ class MenuItemMenu(Base):
     __tablename__ = "menu_item_menus"
 
     id = Column(Integer, primary_key=True)
-    menu_id = Column(Integer, ForeignKey("menus.id", ondelete="CASCADE"), nullable=False)
-    menu_item_id = Column(Integer, ForeignKey("menu_items.id", ondelete="CASCADE"), nullable=False)
+    menu_id = Column(
+        Integer, ForeignKey("menus.id", ondelete="CASCADE"), nullable=False
+    )
+    menu_item_id = Column(
+        Integer, ForeignKey("menu_items.id", ondelete="CASCADE"), nullable=False
+    )
     price = Column(Float, nullable=False)
 
     menu = relationship("Menu", back_populates="items")

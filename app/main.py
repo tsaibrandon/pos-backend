@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from strawberry.fastapi import GraphQLRouter
 
 from app.graphql.schema import schema
-from strawberry.fastapi import GraphQLRouter
 
 app = FastAPI()
 
@@ -12,13 +12,15 @@ app.add_middleware(
     allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"]
+    allow_headers=["*"],
 )
+
 
 # Root route
 @app.get("/")
 def read_root():
     return {"message": "Welcome to FastAPI!"}
+
 
 # Mount GraphQL
 graphql_app = GraphQLRouter(schema, graphiql=True)

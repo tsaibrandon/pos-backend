@@ -1,7 +1,9 @@
 import enum
-from app.db.database import Base
+
 from sqlalchemy import Column, DateTime, Enum, Float, ForeignKey, Integer, String, func
 from sqlalchemy.orm import relationship
+
+from app.db.database import Base
 
 """
 SQLAlchemy ORM models for the orders system:
@@ -19,7 +21,9 @@ class Order(Base):
     __tablename__ = "orders"
 
     id = Column(Integer, primary_key=True)
-    restaurant_id = Column(Integer, ForeignKey("restaurants.id", ondelete="CASCADE"), nullable=False)
+    restaurant_id = Column(
+        Integer, ForeignKey("restaurants.id", ondelete="CASCADE"), nullable=False
+    )
     customer_name = Column(String, nullable=False)
     total_price = Column(Float, nullable=False)
     status = Column(Enum(OrderStatus), nullable=False)
@@ -27,14 +31,18 @@ class Order(Base):
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
     restaurant = relationship("Restaurant", back_populates="orders")
-    items = relationship("OrderItem", back_populates="order", cascade="all, delete-orphan")
+    items = relationship(
+        "OrderItem", back_populates="order", cascade="all, delete-orphan"
+    )
 
 
 class OrderItem(Base):
     __tablename__ = "order_items"
 
     id = Column(Integer, primary_key=True)
-    order_id = Column(Integer, ForeignKey("orders.id", ondelete="CASCADE"), nullable=False)
+    order_id = Column(
+        Integer, ForeignKey("orders.id", ondelete="CASCADE"), nullable=False
+    )
     menu_item_id = Column(Integer, ForeignKey("menu_items.id"), nullable=False)
     quantity = Column(Integer, nullable=False)
     price_at_time = Column(Float, nullable=False)
