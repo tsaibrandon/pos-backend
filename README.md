@@ -2,14 +2,16 @@
 
 ### development setup (using python3.13)
 ```sh
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
+curl -sSL https://install.python-poetry.org | python3 -
+poetry install
 ```
+
+### when developing
+1. make sure IDE uses 
 
 ### when making changes (run in root directory)
 ```sh
-isort . && black . && flake8 . && mypy .
+poetry run isort . && poetry run black . && poetry run flake8 . && poetry run mypy .
 ```
 
 ### to run the server ([docker](https://www.docker.com/) needed):
