@@ -1,10 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from strawberry.fastapi import GraphQLRouter
+
+from app.graphql.schema import schema
 
 app = FastAPI()
 
-# NOTE: Allow all origins for development purposes (restrict in production)
+# CORS middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -14,12 +16,12 @@ app.add_middleware(
 )
 
 
-# Root endpoint
+# Root route
 @app.get("/")
-async def root():
+def read_root():
     return {"message": "Welcome to FastAPI!"}
 
 
-@app.get("/favicon.ico", include_in_schema=False)
-async def favicon():
-    return FileResponse("static/favicon.ico")
+# Mount GraphQL
+graphql_app = GraphQLRouter(schema, graphiql=True)
+app.include_router(graphql_app, prefix="/graphql")
