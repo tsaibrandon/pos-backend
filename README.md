@@ -7,7 +7,7 @@ poetry install
 ```
 
 ### when developing
-1. make sure IDE uses 
+- make sure IDE uses python interpreter associated with poetry environment
 
 ### when making changes (run in root directory)
 ```sh
